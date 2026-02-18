@@ -1,4 +1,4 @@
-// [Missing Code 1] Include header file.
+#include "lab20.h"
   
 int main(){
 	srand(time(0));
