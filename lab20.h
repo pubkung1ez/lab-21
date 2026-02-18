@@ -40,6 +40,10 @@ class Unit{
 		void equip(Equipment *);  
 };
 
+void Unit::dodge(){
+    dodge_on = true;
+}
+
 Unit::Unit(string t,string n){ 
 	type = t;
 	name = n;
@@ -53,8 +57,13 @@ Unit::Unit(string t,string n){
 		def = rand()%3+5;
 	}
 	hp = hpmax;	
+	dodge_on = false;
 	guard_on = false;
 	equipment = NULL;
+}
+
+int Unit::ultimateAttack(Unit &opp){
+    return opp.beAttacked(atk*2);
 }
 
 void Unit::showStatus(){
@@ -73,15 +82,24 @@ void Unit::showStatus(){
 }
 
 void Unit::newTurn(){
+    dodge_on = false;
 	guard_on = false; 
 }
 
 int Unit::beAttacked(int oppatk){
-	int dmg;
+	int dmg ;
+	int chance = rand()%2;
 	if(oppatk > def){
 		dmg = oppatk-def;	
 		if(guard_on) dmg = dmg/3;
-	}	
+	}
+	if(dodge_on){
+	    if(chance > 0){
+	        dmg = 2*dmg;   
+	    }else{
+	        dmg = 0;
+	    }
+	}
 	hp -= dmg;
 	if(hp <= 0){hp = 0;}
 	
@@ -167,4 +185,3 @@ void playerLose(){
 	cout << "*                                                     *\n";
 	cout << "*******************************************************\n";
 };
-
